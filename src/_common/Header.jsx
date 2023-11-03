@@ -1,6 +1,7 @@
 import { Container } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import AuthContainer from '../auth/AuthContainer'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -12,6 +13,9 @@ const Header = () => {
       <Container maxWidth="xl">
         <span onClick={onClick} style={{ "float": 'left', fontSize: "24px", cursor: "pointer" }}>
           🌱SeedStories
+        </span>
+        <span style={{ float: "right" }} >
+          <AuthContainer />
         </span>
       </Container>
     </div>
