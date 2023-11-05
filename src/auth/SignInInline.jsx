@@ -1,7 +1,7 @@
 import { Button, FormLabel, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import { RecaptchaVerifier, getAuth, signInWithPhoneNumber } from "firebase/auth";
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ErrorToast from '../_common/ErrorToast';
 
 const SignInInline = () => {
@@ -12,6 +12,7 @@ const SignInInline = () => {
   const [confirmationResultObject, setConfirmationResultObject] = useState();
   const [showError, setShowError] = useState();
   const [errorMessage, setErrorMessage] = useState();
+  const [appVerifier, setAppVerifier] = useState();
   const displayError = error => {
     const { message } = error
     setErrorMessage(message);
@@ -20,16 +21,22 @@ const SignInInline = () => {
 
   const auth = getAuth();
 
+
+  useEffect(() => {
+    if (auth) {
+      const recaptchaVerifier = new RecaptchaVerifier(auth, captchaContainerRef.current, {
+        'size': 'invisible',
+        'callback': (response) => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+          //onSignInSubmit();
+        }
+      });
+      setAppVerifier(recaptchaVerifier)
+    }
+  }, [auth])
   const onSubmitPhone = e => {
     e.preventDefault();
     const usNumber = `+1${phoneNumber}`;
-    const appVerifier = new RecaptchaVerifier(auth, captchaContainerRef.current, {
-      'size': 'invisible',
-      'callback': (response) => {
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-        //onSignInSubmit();
-      }
-    });
     signInWithPhoneNumber(auth, usNumber, appVerifier)
       .then((confirmationResult) => {
         // SMS sent. Prompt user to type the code from the message, then sign the
