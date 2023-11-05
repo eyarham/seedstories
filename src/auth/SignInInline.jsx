@@ -1,4 +1,4 @@
-import { FormLabel, TextField } from '@mui/material';
+import { Button, FormLabel, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import { RecaptchaVerifier, getAuth, signInWithPhoneNumber } from "firebase/auth";
 import React, { useRef, useState } from 'react';
@@ -70,6 +70,7 @@ const SignInInline = () => {
           <Box component="form" onSubmit={onSubmitPhone}>
             <FormLabel sx={{ margin: 1 }}>Sign in: </FormLabel>
             <TextField size='small' sx={{ marginLeft: 1 }} placeholder="phone" onChange={onPhoneChange} type="number" />
+            <Button variant="contained" sx={{ marginLeft: 1 }} onClick={onSubmitPhone} >go</Button>
           </Box>
         </span>
       }
@@ -78,6 +79,7 @@ const SignInInline = () => {
           <Box component="form" onSubmit={onSubmitCode}>
             code sent to {phoneNumber}
             <TextField size='small' sx={{ marginLeft: 1 }} placeholder="code" onChange={onCodeChange}></TextField>
+            <Button variant="contained" sx={{ marginLeft: 1 }} onClick={onSubmitPhone} >go</Button>
           </Box>
         </span>
       }
