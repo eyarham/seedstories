@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import LogoutRoute from '../auth/LogoutRoute'
 import Home from '../home/Home'
 import Layout from './Layout'
+import Seeds from '../seeds/Seeds'
 
 const Router = () => {
   return (
@@ -10,6 +11,7 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/seeds" element={<Seeds />} />
           <Route path="/logout" element={<LogoutRoute />} />
           <Route path="*" element={<Home />} />
         </Route>
