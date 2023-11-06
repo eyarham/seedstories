@@ -86,7 +86,7 @@ const SignInInline = () => {
           <Box component="form" onSubmit={onSubmitCode}>
             code sent to {phoneNumber}
             <TextField size='small' sx={{ marginLeft: 1 }} placeholder="code" onChange={onCodeChange}></TextField>
-            <Button variant="contained" sx={{ marginLeft: 1 }} onClick={onSubmitPhone} >go</Button>
+            <Button variant="contained" sx={{ marginLeft: 1 }} onClick={onSubmitCode} >go</Button>
           </Box>
         </span>
       }
