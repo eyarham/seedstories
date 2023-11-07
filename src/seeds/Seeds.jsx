@@ -1,53 +1,83 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import React, { useContext, useEffect, useState } from 'react';
 import api from '../database/api';
 import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 import SeedAdd from './SeedAdd';
 // import data from "./data.json";
+import { DeleteForever } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import Spinner from '../_common/Spinner';
+import { AuthUserContext } from '../auth/AuthUserContextProvider';
 
 const Seeds = () => {
   const [columns, setColumns] = useState([]);
   const { db } = useContext(FirebaseContext);
+  const authUser = useContext(AuthUserContext);
   useEffect(() => {
+    const deleteEnvelope = (id) => {
+      if (authUser) {
+        const seedsApi = api(db, "seeds", authUser.uid);
+        seedsApi.deleteDocument(id);
+      }
+    }
     const seedFieldsApi = api(db, "seedFields");
     seedFieldsApi.getDocsSub(c => {
-      const cols = c.sort(a=>a.data().order)
-      .map(d => {
-        const { name } = d.data();
-        return ({ field: name, headerName: name })
+      const cols = c.sort((a, b) => a.data().order - b.data().order)
+        .map(d => {
+          const { name } = d.data();
+          return ({ field: name, headerName: name, editable: true })
+        })
+      cols.push({
+        field: "actions", type: 'actions', headerName: "actions", width: 200,
+        getActions: params => [
+          <GridActionsCellItem
+            icon={<DeleteForever />}
+            label="Delete"
+            onClick={() => deleteEnvelope(params.id)}
+          />
+        ]
       })
       return setColumns(cols);
     })
-  }, [db])
+  }, [authUser, db])
   const [rows, setRows] = useState();
   useEffect(() => {
     const seedsApi = api(db, "seeds");
-    seedsApi.getDocsSub(d => {
-      const data = d.map((d, i) => ({ ...d.data(), id: i}))
+    seedsApi.getDocsSub(docs => {
+      const data = docs.map(d => ({ ...d.data(), id: d.id }))
 
-    setRows(data);
-  })
-}, [db])
+      setRows(data);
+    })
+  }, [db])
 
-if (!rows) return <span>spinner</span>
-return (
-  <div>
-    <DataGrid
-      rows={rows}
-      columns={columns}
-      initialState={{
-        pagination: {
-          paginationModel: { page: 0, pageSize: 10 },
-        },
-      }}
-      pageSizeOptions={[5, 10]}
-      checkboxSelection
-    />
-    <SeedAdd />
-    <Link to="/seedFields">seed fields</Link>
-  </div>
-)
+  if (!rows || !columns) return <Spinner />
+  const processRowUpdate = (newRow) => {
+    const seedFieldsApi = api(db, "seeds", authUser.uid);
+    const { id } = newRow
+    const newData = newRow;
+    delete newData['id'];
+    seedFieldsApi.updateDoc(id, newData)
+    return newRow;
+  };
+  return (
+    <div>
+      Envelopes
+      <DataGrid
+        rows={rows}
+        columns={columns}
+
+        processRowUpdate={processRowUpdate}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 10 },
+          },
+        }}
+        pageSizeOptions={[10, 20]}
+      />
+      <SeedAdd />
+      <Link to="/seedFields">envelope fields</Link>
+    </div>
+  )
 }
 
 export default Seeds

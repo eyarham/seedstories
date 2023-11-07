@@ -8,33 +8,37 @@ const SeedAdd = () => {
   const [newSeedRecord, setNewSeedRecord] = useState({});
   const { db } = useContext(FirebaseContext);
   useEffect(() => {
-  const seedFieldsApi = api(db, "seedFields");
-    seedFieldsApi.getDocsSub(setSeedFields)
+    const seedFieldsApi = api(db, "seedFields");
+    seedFieldsApi.getDocsSub(docs => {
+      const flatDocs = docs.map(d => ({ ...d.data(), id: d.id }))
+      const sorteddocs = flatDocs.sort((a, b) => a.order - b.order)
+      return setSeedFields(sorteddocs)
+    }
+    )
   }, [db])
-  const onSeedAddSubmit = e=>{
+  const onSeedAddSubmit = e => {
     e.preventDefault();
     const seedsApi = api(db, "seeds");
-        
+
     seedsApi.createDoc(newSeedRecord)
   }
   return (
     <div>
       <Box component="form" onSubmit={onSeedAddSubmit}>
-        Add new Seed to catalog
+        Add new Envelope to catalog
         {seedFields &&
-          seedFields.sort(a=>a.data().order).map((s, i) =>
-          {
-            const onChangeFieldValue = e=>{
+          seedFields.map((s, i) => {
+            const onChangeFieldValue = e => {
               const newValue = newSeedRecord;
-              newValue[s.data().name] = e.target.value;
+              newValue[s.name] = e.target.value;
               setNewSeedRecord(newValue);
             }
-           return <div key={i}>
-              <TextField placeholder={s.data().name} onChange={onChangeFieldValue} />
+            return <div key={i}>
+              <TextField placeholder={s.name} onChange={onChangeFieldValue} />
             </div>
           }
           )}
-          <Button variant="contained" type="submit">submit</Button>
+        <Button variant="contained" type="submit">submit</Button>
       </Box>
     </div>
   )

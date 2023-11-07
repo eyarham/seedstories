@@ -8,8 +8,8 @@ const Header = () => {
   const onClick = () => {
     navigate("/");
   }
-  const onClickCatalog = () => {
-    navigate("/seeds");
+  const onClickBank = () => {
+    navigate("/bank");
   }
   return (
     <div style={{ backgroundColor: "#ddffdd", minHeight: "40px", padding: "5px" }}>
@@ -17,8 +17,8 @@ const Header = () => {
         <span onClick={onClick} style={{ "float": 'left', fontSize: "24px", cursor: "pointer" }}>
           🌱SeedStories
         </span>
-        <span onClick={onClickCatalog} style={{ "float": 'left', fontSize: "20px", cursor: "pointer", marginLeft: "10px", color:"grey" }}>
-          catalog
+        <span onClick={onClickBank} style={{ "float": 'left', fontSize: "20px", cursor: "pointer", marginLeft: "10px", color: "grey" }}>
+          bank
         </span>
         <span style={{ float: "right" }} >
           <AuthContainer />

@@ -6,7 +6,7 @@ const firebase = {
   collection, doc, getDoc, getFirestore, setDoc, deleteDoc
 }
 
-const api = (db, collectionString) => {
+const api = (db, collectionString, userId) => {
   // var db;
   // const getDb = () => {
   //   if (!db) { db = firebase.getFirestore(); }
@@ -45,7 +45,7 @@ const api = (db, collectionString) => {
     return unsub;
   }
 
-  const createDoc = async (doc, userId) => {
+  const createDoc = async (doc) => {
 
     const docToAdd = {
       createdBy: (userId) || "unknown",
@@ -58,21 +58,21 @@ const api = (db, collectionString) => {
   const set = async (id, data) => {
     const docRef = getDocRef(id);
     const doc = await firebase.getDoc(docRef);
-    const updatedData = { ...doc.data(), ...data };
+    const updatedData = { ...doc.data(), ...data, updatedBy: userId };
     await firebase.setDoc(getDocRef(id), updatedData);
   }
 
   const updateDoc = async (id, data) => {
     const docRef = getDocRef(id);
     const doc = await firebase.getDoc(docRef);
-    const updatedData = { ...doc.data(), ...data };
+    const updatedData = { ...doc.data(), ...data, updatedBy: userId };
     await firebase.setDoc(getDocRef(id), updatedData);
   }
 
   const updateField = async (id, fieldObj) => {
     const docRef = getDocRef(id);
     const doc = await firebase.getDoc(docRef);
-    const updatedData = { ...doc.data(), ...fieldObj };
+    const updatedData = { ...doc.data(), ...fieldObj, updatedBy: userId };
     await firebase.setDoc(getDocRef(id), updatedData);
   }
 
