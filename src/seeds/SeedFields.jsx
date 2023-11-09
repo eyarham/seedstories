@@ -1,7 +1,7 @@
 import { DeleteForever } from '@mui/icons-material';
-import { Box, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Spinner from '../_common/Spinner';
 import { AuthUserContext } from '../auth/AuthUserContextProvider';
 import api from '../database/api';
@@ -10,6 +10,7 @@ const SeedFields = () => {
   const authUser = useContext(AuthUserContext);
   const [seedFields, setSeedFields] = useState();
   const [newFieldName, setNewFieldName] = useState();
+  const formRef = useRef();
   const { db } = useContext(FirebaseContext);
   useEffect(() => {
     const seedFieldsApi = api(db, "seedFields");
@@ -19,10 +20,15 @@ const SeedFields = () => {
   const onChangeNewFieldName = e => {
     setNewFieldName(e.target.value)
   }
-  const onNewFieldSubmit = e => {
+  const getNextOrder = (arr) => {
+    const max = Math.max(...arr.map(a => a.order));
+    return (max + 1)
+  }
+  const onNewFieldSubmit = async e => {
     e.preventDefault();
     const seedFieldsApi = api(db, "seedFields", authUser.uid);
-    seedFieldsApi.createDoc({ name: newFieldName, order: 99 })
+    await seedFieldsApi.createDoc({ name: newFieldName, order: getNextOrder(seedFields) })
+    formRef.current.reset();
   }
   if (!seedFields) return <Spinner />
   const deleteField = id => {
@@ -68,8 +74,9 @@ const SeedFields = () => {
         />
       </div>
       <div>
-        <Box component="form" onSubmit={onNewFieldSubmit}>
+        <Box component="form" onSubmit={onNewFieldSubmit} ref={formRef}>
           <TextField placeholder="field name" onChange={onChangeNewFieldName} />
+          <Button type="Submit">Add</Button>
         </Box>
       </div>
     </div>

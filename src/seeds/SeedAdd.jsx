@@ -1,11 +1,12 @@
 import { Box, Button, TextField } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import api from '../database/api';
 import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 
 const SeedAdd = () => {
   const [seedFields, setSeedFields] = useState();
   const [newSeedRecord, setNewSeedRecord] = useState({});
+  const formRef = useRef()
   const { db } = useContext(FirebaseContext);
   useEffect(() => {
     const seedFieldsApi = api(db, "seedFields");
@@ -16,15 +17,16 @@ const SeedAdd = () => {
     }
     )
   }, [db])
-  const onSeedAddSubmit = e => {
+  const onSeedAddSubmit = async e => {
     e.preventDefault();
     const seedsApi = api(db, "seeds");
 
-    seedsApi.createDoc(newSeedRecord)
+    await seedsApi.createDoc(newSeedRecord);
+    formRef.current.reset();
   }
   return (
     <div>
-      <Box component="form" onSubmit={onSeedAddSubmit}>
+      <Box component="form" onSubmit={onSeedAddSubmit} ref={formRef}>
         Add new Envelope to catalog
         {seedFields &&
           seedFields.map((s, i) => {
