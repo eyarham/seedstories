@@ -76,7 +76,7 @@ const SignInInline = () => {
         <span>
           <Box component="form" onSubmit={onSubmitPhone}>
             <FormLabel sx={{ margin: 1 }}>Sign in: </FormLabel>
-            <TextField size='small' sx={{ marginLeft: 1 }} placeholder="phone" onChange={onPhoneChange} type="number" />
+            <TextField name="phone" size='small' sx={{ marginLeft: 1, width:120 }} placeholder="phone" onChange={onPhoneChange} type="number" />
             <Button variant="contained" sx={{ marginLeft: 1 }} onClick={onSubmitPhone} >go</Button>
           </Box>
         </span>
@@ -85,7 +85,7 @@ const SignInInline = () => {
         <span>
           <Box component="form" onSubmit={onSubmitCode}>
             code sent to {phoneNumber}
-            <TextField size='small' sx={{ marginLeft: 1 }} placeholder="code" onChange={onCodeChange}></TextField>
+            <TextField name="code" size='small' sx={{ marginLeft: 1, width:120 }} placeholder="code" onChange={onCodeChange}></TextField>
             <Button variant="contained" sx={{ marginLeft: 1 }} onClick={onSubmitCode} >go</Button>
           </Box>
         </span>
