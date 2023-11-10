@@ -1,11 +1,12 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Login from '../auth/Login'
 import LogoutRoute from '../auth/LogoutRoute'
+import Entries from '../entries/Entries'
 import Home from '../home/Home'
 import SeedFields from '../seeds/SeedFields'
 import Seeds from '../seeds/Seeds'
 import Layout from './Layout'
-import Entries from '../entries/Entries'
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
           <Route path="/bank" element={<Seeds />} />
           <Route path="/seedFields" element={<SeedFields />} />
           <Route path="/notebook" element={<Entries />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<LogoutRoute />} />
           <Route path="*" element={<Home />} />
         </Route>
