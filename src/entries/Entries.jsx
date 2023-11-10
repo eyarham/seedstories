@@ -7,7 +7,7 @@ import EntryAdd from './EntryAdd';
 
 const columns = [
   { field: "envelope", headerName: "Envelope" },
-  { field: "date", headerName: "Date" },  
+  { field: "date", headerName: "Date" },
   { field: "location", headerName: "Location" }
 ]
 const Entries = () => {

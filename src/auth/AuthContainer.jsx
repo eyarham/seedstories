@@ -1,11 +1,13 @@
+import { Avatar } from "@mui/material";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SignInInline from './SignInInline';
 
 
 const AuthContainer = () => {
   const [loggedInUser, setLoggedInUser] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -22,11 +24,13 @@ const AuthContainer = () => {
       }
     });
   }, [])
+  const onClickAvatar = () => {
+    navigate("/account")
+  }
   if (loggedInUser) {
     return <span>
-
-      <span>welcome, user {loggedInUser.uid}</span>
-      <span><Link to="/logout">logout</Link></span>
+      <span onClick={onClickAvatar} style={{ float: "right", cursor: "pointer" }}><Avatar></Avatar></span>
+      <span style={{ float: "right", margin: 8 }}><Link to="/logout">logout</Link></span>
     </span>
   }
   return (
