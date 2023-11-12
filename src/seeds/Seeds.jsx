@@ -5,7 +5,6 @@ import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 import SeedAdd from './SeedAdd';
 // import data from "./data.json";
 import { DeleteForever } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
 import Spinner from '../_common/Spinner';
 import { AuthUserContext } from '../auth/AuthUserContextProvider';
 
@@ -74,8 +73,11 @@ const Seeds = () => {
         }}
         pageSizeOptions={[10, 20]}
       />
-      <SeedAdd />
-      <Link to="/seedFields">envelope fields</Link>
+      {authUser &&
+
+        <SeedAdd />
+
+      }
     </div>
   )
 }

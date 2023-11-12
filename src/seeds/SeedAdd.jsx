@@ -2,6 +2,7 @@ import { Box, Button, TextField } from '@mui/material';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import api from '../database/api';
 import { FirebaseContext } from '../firebase/FirebaseContextProvider';
+import { Link } from 'react-router-dom';
 
 const SeedAdd = () => {
   const [seedFields, setSeedFields] = useState();
@@ -42,6 +43,7 @@ const SeedAdd = () => {
           )}
         <Button variant="contained" type="submit">submit</Button>
       </Box>
+      <Link to="/seedFields">envelope fields</Link>
     </div>
   )
 }
