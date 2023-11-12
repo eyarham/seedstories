@@ -47,7 +47,7 @@ const api = (db, collectionString, userId) => {
 
   const createDoc = async (doc) => {
     const docToAdd = {
-      createdBy: (userId) || "unknown",
+      createdBy: userId,
       createdDate: new Date(),
       ...doc
     }
