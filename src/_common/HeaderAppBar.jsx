@@ -13,11 +13,13 @@ import Typography from '@mui/material/Typography';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthUserContext } from '../auth/AuthUserContextProvider';
+import { UserContext } from '../user/UserContextProvider';
 
 
 
 const HeaderAppBar = () => {
   const authUser = useContext(AuthUserContext);
+  const user = useContext(UserContext);
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -92,7 +94,6 @@ const HeaderAppBar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="#"
             onClick={navigateHome}
             sx={{
               mr: 2,
@@ -102,6 +103,7 @@ const HeaderAppBar = () => {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              cursor:"pointer"
             }}
           >
             SeedStories
@@ -149,7 +151,6 @@ const HeaderAppBar = () => {
             variant="h5"
             noWrap
             component="a"
-            href="#"
             onClick={navigateHome}
             sx={{
               mr: 2,
@@ -160,6 +161,7 @@ const HeaderAppBar = () => {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              cursor:"pointer"
             }}
           >
             SeedStories
@@ -179,7 +181,7 @@ const HeaderAppBar = () => {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {authUser &&
-                  <Avatar ></Avatar>
+                  <Avatar alt={user && user.displayName} >{user && user.displayName[0]}</Avatar>
                 }
                 {!authUser &&
                   <Avatar >?</Avatar>

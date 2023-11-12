@@ -3,20 +3,23 @@ import React from 'react';
 import { Outlet } from "react-router-dom";
 import AuthUserContextProvider from '../auth/AuthUserContextProvider';
 import FirebaseContextProvider from '../firebase/FirebaseContextProvider';
+import UserContextProvider from '../user/UserContextProvider';
 import HeaderAppBar from './HeaderAppBar';
 
 const Layout = () => {
   return (
     <FirebaseContextProvider>
       <AuthUserContextProvider>
-        <div>
+        <UserContextProvider>
           <div>
-            <HeaderAppBar />
+            <div>
+              <HeaderAppBar />
+            </div>
+            <Container maxWidth="xl">
+              <Outlet />
+            </Container>
           </div>
-          <Container maxWidth="xl">
-            <Outlet />
-          </Container>
-        </div>
+        </UserContextProvider>
       </AuthUserContextProvider>
     </FirebaseContextProvider>
   )
