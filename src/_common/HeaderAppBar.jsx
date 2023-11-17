@@ -35,7 +35,7 @@ const HeaderAppBar = () => {
   }, [authUser])
   useEffect(() => {
     if (authUser) {
-      setPages(['bank', 'notebook', 'the swap']);
+      setPages(['notebook', 'bank', 'the swap']);
     }
     else {
       setPages(['bank']);
@@ -103,7 +103,7 @@ const HeaderAppBar = () => {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
-              cursor:"pointer"
+              cursor: "pointer"
             }}
           >
             SeedStories
@@ -161,7 +161,7 @@ const HeaderAppBar = () => {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
-              cursor:"pointer"
+              cursor: "pointer"
             }}
           >
             SeedStories

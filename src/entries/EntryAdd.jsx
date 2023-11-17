@@ -1,40 +1,61 @@
-import { Box, Button, Input } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, Input } from '@mui/material';
 import React, { useContext, useRef, useState } from 'react';
 import { AuthUserContext } from '../auth/AuthUserContextProvider';
 import api from '../database/api';
 import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 
+const defaultNewEntry = {
+  banked: false,
+  date: new Date().toLocaleDateString('en-CA')
+}
 const EntryAdd = () => {
-  const [newEntry, setNewEntry] = useState();
+  const [newEntry, setNewEntry] = useState(defaultNewEntry);
+  const [isReadyToSubmit, setIsReadyToSubmit] = useState();
   const { db } = useContext(FirebaseContext);
   const authUser = useContext(AuthUserContext);
   const formRef = useRef();
-  const onChangeFieldValue = e => {
-    const updatedEntry = newEntry || {};
+  const onChangeFieldValue = (e) => {
     const field = e.target.name;
-    updatedEntry[field] = e.target.value
-    setNewEntry(updatedEntry);
+    const newFieldObj = {};
+    newFieldObj[field] = e.target.value
+    setNewEntry({ ...newEntry, ...newFieldObj });
+    setIsReadyToSubmit(true);
   }
   const onNewSeedSubmit = async (e) => {
     e.preventDefault();
     const entriesApi = api(db, "entries", authUser.uid);
     await entriesApi.createDoc(newEntry);
     formRef.current.reset();
+    setIsReadyToSubmit(false);
   }
+  const onIncludeChange = (e) => {
+    const field = e.target.name;
+    const newFieldObj = {};
+    newFieldObj[field] = e.target.checked;
+    setNewEntry({ ...newEntry, ...newFieldObj });
+    setIsReadyToSubmit(true);
+  }
+  const today = new Date().toLocaleDateString('en-CA');
   return (
     <div>
-      <h2>New Seed</h2>
+      <h2>New Seed Entry</h2>
       <Box component="form" onSubmit={onNewSeedSubmit} ref={formRef}>
         <div>
-          <Input name="envelope" onChange={onChangeFieldValue} />
+          <Input name="name" placeholder="name" onChange={onChangeFieldValue} />
         </div>
         <div>
-          <Input name="date" type="date" onChange={onChangeFieldValue} />
+          <Input name="envelope" placeholder="envelope" onChange={onChangeFieldValue} />
         </div>
         <div>
-          <Input name="location" onChange={onChangeFieldValue} />
+          <Input name="date" type="date" onChange={onChangeFieldValue} defaultValue={today} />
         </div>
-        <Button type="Submit">Add</Button>
+        <div>
+          <Input name="location" placeholder='location' onChange={onChangeFieldValue} />
+        </div>
+        <div>
+          <FormControlLabel control={<Checkbox name='banked' onChange={onIncludeChange} aria-label='Include in Bank?' />} label="Include in Bank?" />
+        </div>
+        <Button type="Submit" disabled={!isReadyToSubmit}>Add</Button>
       </Box>
     </div>
   )
