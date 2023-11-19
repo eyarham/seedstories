@@ -2,9 +2,9 @@ import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from '../auth/Login'
 import LogoutRoute from '../auth/LogoutRoute'
+import Ecoregions from '../ecoregions/Ecoregions'
 import Notebook from '../entries/Notebook'
 import Home from '../home/Home'
-import Regions from '../regions/Regions'
 import Bank from '../seeds/Bank'
 import SeedFields from '../seeds/SeedFields'
 import Species from '../species/Species'
@@ -19,7 +19,7 @@ const Router = () => {
           <Route path="/" element={<Home />} />
           <Route path="/bank" element={<Bank />} />
           <Route path="/species" element={<Species />} />
-          <Route path="/regions" element={<Regions />} />
+          <Route path="/ecoregions" element={<Ecoregions />} />
           <Route path="/seedFields" element={<SeedFields />} />
           <Route path="/notebook" element={<Notebook />} />
           <Route path="/profile" element={<Profile />} />

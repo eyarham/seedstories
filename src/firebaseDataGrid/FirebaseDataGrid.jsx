@@ -8,7 +8,7 @@ import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 import { UserContext } from '../user/UserContextProvider';
 import AddRow from './AddRow';
 
-const FirebaseDataGrid = ({ collectionString, fields }) => {
+const FirebaseDataGrid = ({ collectionString, fields, filter }) => {
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
   const [isEditMode, setIsEditMode] = useState();
@@ -16,10 +16,18 @@ const FirebaseDataGrid = ({ collectionString, fields }) => {
   const { db } = useContext(FirebaseContext);
   const authUser = useContext(AuthUserContext);
   const user = useContext(UserContext);
+  const setRowsFromDocs = docs => setRows(docs.map(d => ({ ...d.data(), id: d.id })));
   useEffect(() => {
     const entriesApi = api(db, collectionString);
-    entriesApi.getDocsSub(docs => setRows(docs.map(d => ({ ...d.data(), id: d.id }))));
-  }, [authUser, collectionString, db])
+    if (filter) {
+      entriesApi.getDocsByFieldSub("ecoregion", filter, setRowsFromDocs)
+    }
+    else {
+      entriesApi.getDocsSub(setRowsFromDocs);
+    }
+
+
+  }, [authUser, collectionString, db, filter])
   useEffect(() => {
     const deleteEntry = (id) => {
       if (authUser) {
@@ -71,9 +79,8 @@ const FirebaseDataGrid = ({ collectionString, fields }) => {
       <DataGrid
         rows={rows}
         columns={columns}
-        editMode="row"
         processRowUpdate={processRowUpdate}
-        onProcessRowUpdateError={processRowUpdateError}       
+        onProcessRowUpdateError={processRowUpdateError}
       />
       {errorMessage}
     </div>

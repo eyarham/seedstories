@@ -4,7 +4,7 @@ import { AuthUserContext } from '../auth/AuthUserContextProvider';
 import api from '../database/api';
 import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 
-const collectionString = "regions";
+const collectionString = "ecoregions";
 const fields = ["number", "name", "range"]
 const AddRegion = () => {
   const [newEntry, setNewEntry] = useState();
