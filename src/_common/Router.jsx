@@ -4,8 +4,10 @@ import Login from '../auth/Login'
 import LogoutRoute from '../auth/LogoutRoute'
 import Notebook from '../entries/Notebook'
 import Home from '../home/Home'
+import Regions from '../regions/Regions'
 import Bank from '../seeds/Bank'
 import SeedFields from '../seeds/SeedFields'
+import Species from '../species/Species'
 import Profile from '../user/Profile'
 import Layout from './Layout'
 
@@ -16,6 +18,8 @@ const Router = () => {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/bank" element={<Bank />} />
+          <Route path="/species" element={<Species />} />
+          <Route path="/regions" element={<Regions />} />
           <Route path="/seedFields" element={<SeedFields />} />
           <Route path="/notebook" element={<Notebook />} />
           <Route path="/profile" element={<Profile />} />
