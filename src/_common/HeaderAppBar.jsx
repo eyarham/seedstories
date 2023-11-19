@@ -35,10 +35,10 @@ const HeaderAppBar = () => {
   }, [authUser])
   useEffect(() => {
     if (authUser) {
-      setPages(['notebook', 'bank', 'the swap']);
+      setPages(['notebook', 'bank', 'species', 'regions']);
     }
     else {
-      setPages(['bank']);
+      setPages(['species', 'regions']);
     }
   }, [authUser])
 
@@ -62,6 +62,12 @@ const HeaderAppBar = () => {
     }
     if (e.target.childNodes[0].data === "the swap") {
       navigate("/theswap");
+    }
+    if (e.target.childNodes[0].data === "species") {
+      navigate("/species");
+    }
+    if (e.target.childNodes[0].data === "regions") {
+      navigate("/regions");
     }
     setAnchorElNav(null);
   }

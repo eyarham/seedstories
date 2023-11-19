@@ -10,6 +10,7 @@ import { AuthUserContext } from '../auth/AuthUserContextProvider';
 
 const Seeds = () => {
   const [columns, setColumns] = useState([]);
+  const [rows, setRows] = useState();
   const { db } = useContext(FirebaseContext);
   const authUser = useContext(AuthUserContext);
   useEffect(() => {
@@ -39,7 +40,6 @@ const Seeds = () => {
       return setColumns(cols);
     })
   }, [authUser, db])
-  const [rows, setRows] = useState();
   useEffect(() => {
     const seedsApi = api(db, "seeds");
     seedsApi.getDocsSub(docs => {
