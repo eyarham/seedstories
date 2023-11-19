@@ -73,12 +73,7 @@ const FirebaseDataGrid = ({ collectionString, fields }) => {
         columns={columns}
         editMode="row"
         processRowUpdate={processRowUpdate}
-        onProcessRowUpdateError={processRowUpdateError}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 100 },
-          },
-        }}
+        onProcessRowUpdateError={processRowUpdateError}       
       />
       {errorMessage}
     </div>

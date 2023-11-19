@@ -8,6 +8,7 @@ import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 const AddRow = ({ collectionString, fields }) => {
   const [newEntry, setNewEntry] = useState();
   const [isReadyToSubmit, setIsReadyToSubmit] = useState();
+  const firstTextBoxRef = useRef()
   const { db } = useContext(FirebaseContext);
   const authUser = useContext(AuthUserContext);
   const formRef = useRef();
@@ -24,12 +25,21 @@ const AddRow = ({ collectionString, fields }) => {
     await entriesApi.createDoc(newEntry);
     formRef.current.reset();
     setIsReadyToSubmit(false);
+    firstTextBoxRef.current.focus();
   }
   if (!collectionString || !fields) <Spinner />
   return (
     <Box component="form" onSubmit={onNewSeedSubmit} ref={formRef}>
       <div>
-        {fields.map((f, i) => <Input key={i} name={f} placeholder={f} onChange={onChangeFieldValue} sx={{ margin: 1 }} />)}
+        {fields.map((f, i) => {
+          if (i === 0) {
+            return <Input key={i} name={f} placeholder={f} onChange={onChangeFieldValue} sx={{ margin: 1 }} inputRef={firstTextBoxRef} />
+          }
+          else {
+            return <Input key={i} name={f} placeholder={f} onChange={onChangeFieldValue} sx={{ margin: 1 }} />
+          }
+        })
+        }
       </div>
       <Button type="Submit" disabled={!isReadyToSubmit}>Add</Button>
     </Box>
