@@ -5,6 +5,7 @@ import AuthUserContextProvider from '../auth/AuthUserContextProvider';
 import FirebaseContextProvider from '../firebase/FirebaseContextProvider';
 import UserContextProvider from '../user/UserContextProvider';
 import HeaderAppBar from './HeaderAppBar';
+import Footer from './Footer';
 
 const Layout = () => {
   return (
@@ -18,6 +19,9 @@ const Layout = () => {
             <Container maxWidth="xl">
               <Outlet />
             </Container>
+            <div>
+              <Footer />
+            </div>
           </div>
         </UserContextProvider>
       </AuthUserContextProvider>
