@@ -107,7 +107,7 @@ const api = (db, collectionString, userId) => {
 
   const getDocsByFieldsSub = (fieldValueArray, callback) => {
     const whereClause = fieldValueArray.map(x => {
-   
+
       var key;
       var value
       for (var i in x) {

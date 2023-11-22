@@ -5,7 +5,7 @@ import { AuthUserContext } from '../auth/AuthUserContextProvider';
 import api from '../database/api';
 import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 
-const FirebaseDataGridReadonly = ({ collectionString, fields,  filters }) => {
+const FirebaseDataGridReadonly = ({ collectionString, fields, filters }) => {
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
   const { db } = useContext(FirebaseContext);
@@ -14,7 +14,7 @@ const FirebaseDataGridReadonly = ({ collectionString, fields,  filters }) => {
   useEffect(() => {
     const entriesApi = api(db, collectionString);
     if (filters) {
-      entriesApi.getDocsByFieldsSub(filters,setRowsFromDocs)
+      entriesApi.getDocsByFieldsSub(filters, setRowsFromDocs)
     }
     else {
       entriesApi.getDocsSub(setRowsFromDocs);
