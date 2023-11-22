@@ -25,8 +25,6 @@ const FirebaseDataGrid = ({ collectionString, fields, filter }) => {
     else {
       entriesApi.getDocsSub(setRowsFromDocs);
     }
-
-
   }, [authUser, collectionString, db, filter])
   useEffect(() => {
     const deleteEntry = (id) => {

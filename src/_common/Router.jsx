@@ -3,10 +3,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from '../auth/Login'
 import LogoutRoute from '../auth/LogoutRoute'
 import Ecoregions from '../ecoregions/Ecoregions'
+import Bank from '../entries/Bank'
 import Notebook from '../entries/Notebook'
 import Home from '../home/Home'
-import Bank from '../seeds/Bank'
-import SeedFields from '../seeds/SeedFields'
 import Species from '../species/Species'
 import Profile from '../user/Profile'
 import Layout from './Layout'
@@ -20,7 +19,6 @@ const Router = () => {
           <Route path="/bank" element={<Bank />} />
           <Route path="/species" element={<Species />} />
           <Route path="/ecoregions" element={<Ecoregions />} />
-          <Route path="/seedFields" element={<SeedFields />} />
           <Route path="/notebook" element={<Notebook />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />

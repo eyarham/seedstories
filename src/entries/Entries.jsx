@@ -54,7 +54,6 @@ const Entries = () => {
   ]
   return (
     <div>
-      <h2>Notebook Entries</h2>
       {rows && columns &&
         <DataGrid rows={rows} columns={columns} />
       }
