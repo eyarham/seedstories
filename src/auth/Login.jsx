@@ -8,7 +8,7 @@ const Login = () => {
   const authUser = useContext(AuthUserContext);
   useEffect(()=>{
     if(authUser){
-      navigate("/")
+      navigate("/bank")
     }
   },[authUser, navigate])
 

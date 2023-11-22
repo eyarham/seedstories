@@ -106,7 +106,16 @@ const api = (db, collectionString, userId) => {
   }
 
   const getDocsByFieldsSub = (fieldValueArray, callback) => {
-    const whereClause = fieldValueArray.map(x => where(x.field, "==", x.value));
+    const whereClause = fieldValueArray.map(x => {
+   
+      var key;
+      var value
+      for (var i in x) {
+        key = i;
+        value = x[i]
+      }
+      return where(key, "==", value)
+    });
     const q = query(getCollection(), ...whereClause);
     const unsub = onSnapshot(q, (querySnapshot) => {
       callback(querySnapshot.docs);
