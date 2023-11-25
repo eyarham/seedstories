@@ -5,7 +5,7 @@ import { AuthUserContext } from '../auth/AuthUserContextProvider';
 import api from '../database/api';
 import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 
-const FirebaseDataGridReadonly = ({ collectionString, fields, filters }) => {
+const FirebaseDataGridReadonly = ({ collectionString, fields, filters, sortComparators }) => {
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
   const { db } = useContext(FirebaseContext);
@@ -22,8 +22,16 @@ const FirebaseDataGridReadonly = ({ collectionString, fields, filters }) => {
   }, [authUser, collectionString, db, filters])
   useEffect(() => {
     const cols = fields.map(f => ({ field: f, headerName: f, width: 200 }));
+    if (sortComparators && sortComparators.length === 1) {
+      const comparator = sortComparators[0];
+      const colArr = cols.filter(c => c.field === comparator.field);
+      if (colArr && colArr.length === 1) {
+        const col = colArr[0];
+        col.sortComparator = comparator.comparator
+      }
+    }
     setColumns(cols);
-  }, [authUser, collectionString, db, fields])
+  }, [authUser, collectionString, db, fields, sortComparators])
   if (!columns || !rows) return <Spinner />
   return (
     <div>

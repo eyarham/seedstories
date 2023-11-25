@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import FirebaseDataGrid from '../firebaseDataGrid/FirebaseDataGrid';
+import FirebaseDataGridReadonly from '../firebaseDataGrid/FirebaseDataGridReadonly';
 import EcoregionFinder from './EcoregionFinder';
 
 const collectionString = "ecoregions";
@@ -17,11 +17,40 @@ const Ecoregions = () => {
   const onSearchSubmit = (zip) => {
     setSelectedZip(zip);
   }
+  const getNumFromRegion = a => {
+    var secondDigit = Number(a.slice(1, 2));
+    var isTwoDigit = secondDigit === 0 || secondDigit;
+    if (isTwoDigit) {
+      return Number(a.substring(0, 2))
+    }
+    else { return Number(a.substring(0, 1)) }
+  }
+  const getLettersFromRegion = a => {
+    var hasTwoLetters = !Number(a.substring(a.length - 2, a.length - 1))
+    if (hasTwoLetters) { return a.substring(a.length - 2) }
+    else { return a.substring(a.length - 1) }
+
+  }
+  const numFieldComparator = (a, b) => {
+    const numA = getNumFromRegion(a);
+    const numB = getNumFromRegion(b);
+    if (numA !== numB) {
+      return numA - numB
+    }
+    else {
+      const letA = getLettersFromRegion(a)
+      const letB = getLettersFromRegion(b);
+      return letA.localeCompare(letB);
+    }
+  }
   return (
     <div>
       <h2>Ecoregions</h2>
       <EcoregionFinder onSearchSubmit={onSearchSubmit} initialZip={selectedZip} />
-      <FirebaseDataGrid collectionString={collectionString} fields={fields} />
+      <FirebaseDataGridReadonly
+        collectionString={collectionString}
+        fields={fields}
+        sortComparators={[{ field: "number", comparator: numFieldComparator }]} />
     </div>
   )
 }
