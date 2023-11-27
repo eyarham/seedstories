@@ -10,7 +10,7 @@ const EcoregionPicker = ({ setSelectedEcoregion }) => {
   const { db } = useContext(FirebaseContext);
   useEffect(() => {
     const ecoregionsApi = api(db, collectionString);
-    ecoregionsApi.getDocsSub(docs => setEcoregions(docs.map(d => ({ ...d.data(), id: d.id }))));
+    ecoregionsApi.getDocsSub(["lv3num", "letter"], docs => setEcoregions(docs.map(d => ({ ...d.data(), id: d.id }))));
   }, [db]);
 
   const handleChange = (event) => {

@@ -5,7 +5,7 @@ import { AuthUserContext } from '../auth/AuthUserContextProvider';
 import api from '../database/api';
 import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 
-const FirebaseDataGridReadonly = ({ collectionString, fields, filters, sortComparators }) => {
+const FirebaseDataGridReadonly = ({ collectionString, fields, filters, sortComparators, orderByArray }) => {
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
   const { db } = useContext(FirebaseContext);
@@ -14,12 +14,12 @@ const FirebaseDataGridReadonly = ({ collectionString, fields, filters, sortCompa
   useEffect(() => {
     const entriesApi = api(db, collectionString);
     if (filters) {
-      entriesApi.getDocsByFieldsSub(filters, setRowsFromDocs)
+      entriesApi.getDocsByFieldsSub(filters, orderByArray || [], setRowsFromDocs)
     }
     else {
-      entriesApi.getDocsSub(setRowsFromDocs);
+      entriesApi.getDocsSub(orderByArray || [], setRowsFromDocs);
     }
-  }, [authUser, collectionString, db, filters])
+  }, [authUser, collectionString, db, filters, orderByArray])
   useEffect(() => {
     const cols = fields.map(f => ({ field: f, headerName: f, width: 200 }));
     if (sortComparators && sortComparators.length === 1) {
@@ -36,6 +36,7 @@ const FirebaseDataGridReadonly = ({ collectionString, fields, filters, sortCompa
   return (
     <div>
       <DataGrid
+        sx={{ marginBottom: 10 }}
         rows={rows}
         columns={columns}
       />

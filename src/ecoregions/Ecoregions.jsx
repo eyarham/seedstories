@@ -17,6 +17,7 @@ const Ecoregions = () => {
   const onSearchSubmit = (zip) => {
     setSelectedZip(zip);
   }
+
   const getNumFromRegion = a => {
     var secondDigit = Number(a.slice(1, 2));
     var isTwoDigit = secondDigit === 0 || secondDigit;
@@ -26,10 +27,10 @@ const Ecoregions = () => {
     else { return Number(a.substring(0, 1)) }
   }
   const getLettersFromRegion = a => {
-    var hasTwoLetters = !Number(a.substring(a.length - 2, a.length - 1))
+    var secondLastChar = Number(a.substring(a.length - 2, a.length - 1));
+    var hasTwoLetters = !(secondLastChar === 0 || secondLastChar);
     if (hasTwoLetters) { return a.substring(a.length - 2) }
     else { return a.substring(a.length - 1) }
-
   }
   const numFieldComparator = (a, b) => {
     const numA = getNumFromRegion(a);
@@ -50,6 +51,7 @@ const Ecoregions = () => {
       <FirebaseDataGridReadonly
         collectionString={collectionString}
         fields={fields}
+        orderByArray={["lv3num", "letter"]}
         sortComparators={[{ field: "number", comparator: numFieldComparator }]} />
     </div>
   )

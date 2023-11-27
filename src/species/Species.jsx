@@ -11,7 +11,7 @@ const Species = () => {
     <div>
       <h2>Species</h2>
       <RegionPicker setSelectedEcoregion={setSelectedEcoregion} />
-      <FirebaseDataGrid collectionString={"species"} fields={fields} filter={selectedEcoregion} />
+      <FirebaseDataGrid collectionString={"species"} fields={fields} filter={selectedEcoregion} orderByArray={["common name"]} />
     </div>
   )
 }
