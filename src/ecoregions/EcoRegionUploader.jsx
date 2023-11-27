@@ -32,7 +32,7 @@ const EcoRegionUploader = () => {
     Papa.parse(selectedFile, {
       header: true,
       complete: results => {
-        const { data, meta } = results;
+        const { data } = results;
         // setFileFields(meta.fields);
         // setColumns(getDataCols(meta.fields));
 
