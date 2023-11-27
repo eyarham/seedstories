@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, onSnapshot, query, setDoc, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, onSnapshot, orderBy, query, setDoc, where } from "firebase/firestore";
 
 // import { getCurrentSub } from "../user/api";
 // Allows for better testing experience
@@ -27,8 +27,9 @@ const api = (db, collectionString, userId) => {
     return snapshot.docs;
   }
 
-  const getDocsSub = (callback) => {
-    const q = query(getCollection());
+  const getDocsSub = (orderByArray, callback) => {
+    const orderByClause = orderByArray.map(o => orderBy(o))
+    const q = query(getCollection(), ...orderByClause);
     const unsub = onSnapshot(q, snapshot => {
       callback(snapshot.docs);
     });
@@ -105,7 +106,7 @@ const api = (db, collectionString, userId) => {
     return unsub;
   }
 
-  const getDocsByFieldsSub = (fieldValueArray, callback) => {
+  const getDocsByFieldsSub = (fieldValueArray, orderByArray, callback) => {
     const whereClause = fieldValueArray.map(x => {
 
       var key;
@@ -116,7 +117,8 @@ const api = (db, collectionString, userId) => {
       }
       return where(key, "==", value)
     });
-    const q = query(getCollection(), ...whereClause);
+    const orderByClause = orderByArray.map(o => orderBy(o))
+    const q = query(getCollection(), ...whereClause, ...orderByClause);
     const unsub = onSnapshot(q, (querySnapshot) => {
       callback(querySnapshot.docs);
     });

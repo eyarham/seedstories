@@ -8,7 +8,7 @@ import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 import { UserContext } from '../user/UserContextProvider';
 import AddRow from './AddRow';
 
-const FirebaseDataGrid = ({ collectionString, fields, filter }) => {
+const FirebaseDataGrid = ({ collectionString, fields, filter, orderByArray }) => {
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
   const [isEditMode, setIsEditMode] = useState();
@@ -23,9 +23,9 @@ const FirebaseDataGrid = ({ collectionString, fields, filter }) => {
       entriesApi.getDocsByFieldSub("ecoregion", filter, setRowsFromDocs)
     }
     else {
-      entriesApi.getDocsSub(setRowsFromDocs);
+      entriesApi.getDocsSub(orderByArray || [], setRowsFromDocs);
     }
-  }, [authUser, collectionString, db, filter])
+  }, [authUser, collectionString, db, filter, orderByArray])
   useEffect(() => {
     const deleteEntry = (id) => {
       if (authUser) {
