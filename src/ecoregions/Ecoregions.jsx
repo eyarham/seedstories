@@ -6,16 +6,16 @@ import EcoregionFinder from './EcoregionFinder';
 const collectionString = "ecoregions";
 const fields = ["number", "name", "range"]
 const Ecoregions = () => {
-  const [selectedZip, setSelectedZip] = useState();
+  const [selectedZip, setSelectedZip] = useState("");
   const params = useSearchParams();
   useEffect(() => {
     if (params && params[0]) {
       const zip = params[0].get("zip")
-      zip && setSelectedZip(zip)
+      zip && setSelectedZip(Number(zip))
     }
   }, [params])
   const onSearchSubmit = (zip) => {
-    setSelectedZip(zip);
+    setSelectedZip(Number(zip));
   }
 
   const getNumFromRegion = a => {
@@ -52,6 +52,7 @@ const Ecoregions = () => {
         collectionString={collectionString}
         fields={fields}
         orderByArray={["lv3num", "letter"]}
+        fieldContainsArray={selectedZip && [{ "zips": selectedZip }]}
         sortComparators={[{ field: "number", comparator: numFieldComparator }]} />
     </div>
   )

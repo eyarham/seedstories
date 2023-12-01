@@ -5,7 +5,7 @@ import { AuthUserContext } from '../auth/AuthUserContextProvider';
 import api from '../database/api';
 import { FirebaseContext } from '../firebase/FirebaseContextProvider';
 
-const FirebaseDataGridReadonly = ({ collectionString, fields, filters, sortComparators, orderByArray }) => {
+const FirebaseDataGridReadonly = ({ collectionString, fields, filters, sortComparators, orderByArray, fieldContainsArray }) => {
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
   const { db } = useContext(FirebaseContext);
@@ -13,13 +13,13 @@ const FirebaseDataGridReadonly = ({ collectionString, fields, filters, sortCompa
   const setRowsFromDocs = docs => setRows(docs.map(d => ({ ...d.data(), id: d.id })));
   useEffect(() => {
     const entriesApi = api(db, collectionString);
-    if (filters) {
-      entriesApi.getDocsByFieldsSub(filters, orderByArray || [], setRowsFromDocs)
+    if (filters || fieldContainsArray) {
+      entriesApi.getDocsByFieldsSub(filters || [], fieldContainsArray || [], orderByArray || [], setRowsFromDocs)
     }
     else {
       entriesApi.getDocsSub(orderByArray || [], setRowsFromDocs);
     }
-  }, [authUser, collectionString, db, filters, orderByArray])
+  }, [authUser, collectionString, db, fieldContainsArray, filters, orderByArray])
   useEffect(() => {
     const cols = fields.map(f => ({ field: f, headerName: f, width: 200 }));
     if (sortComparators && sortComparators.length === 1) {

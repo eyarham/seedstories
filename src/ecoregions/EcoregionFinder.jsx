@@ -1,8 +1,11 @@
 import { Button, Container, Paper, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const EcoregionFinder = ({ onSearchSubmit, initialZip }) => {
-  const [zip, setZip] = useState(initialZip);
+  const [zip, setZip] = useState(initialZip || "");
+  useEffect(() => {
+    if (initialZip) { setZip(initialZip) }
+  }, [initialZip])
   const onZipChange = e => {
     setZip(e.target.value)
   }
@@ -18,7 +21,7 @@ const EcoregionFinder = ({ onSearchSubmit, initialZip }) => {
           <TextField id="zip" type="number" value={zip} name='zip' label="Zip" variant="outlined" onChange={onZipChange} />
           <Button type="submit">go</Button>
         </form>
-      </Paper> 
+      </Paper>
     </Container>
   )
 }
