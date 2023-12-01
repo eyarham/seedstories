@@ -106,7 +106,7 @@ const api = (db, collectionString, userId) => {
     return unsub;
   }
 
-  const getDocsByFieldsSub = (fieldValueArray, orderByArray, callback) => {
+  const getDocsByFieldsSub = (fieldValueArray, fieldContainsArray, orderByArray, callback) => {
     const whereClause = fieldValueArray.map(x => {
 
       var key;
@@ -117,8 +117,18 @@ const api = (db, collectionString, userId) => {
       }
       return where(key, "==", value)
     });
+    const arrayWhereClause = fieldContainsArray.map(x => {
+
+      var key;
+      var value
+      for (var i in x) {
+        key = i;
+        value = x[i]
+      }
+      return where(key, "array-contains", value)
+    })
     const orderByClause = orderByArray.map(o => orderBy(o))
-    const q = query(getCollection(), ...whereClause, ...orderByClause);
+    const q = query(getCollection(), ...whereClause, ...orderByClause, ...arrayWhereClause);
     const unsub = onSnapshot(q, (querySnapshot) => {
       callback(querySnapshot.docs);
     });
